@@ -33,7 +33,7 @@ for cluster in clusters:
     MAPbI3_cluster.center(vacuum=4)
     cluster_positions = MAPbI3_cluster.positions
     print(MAPbI3_cluster.cell)
-    
+    print('Cluster {} atom num: {}'.format(cluster, len(MAPbI3_cluster)))
     X = MAPbI3_cluster.cell.array[0,0]
     Y = MAPbI3_cluster.cell.array[1,1]
     Z = MAPbI3_cluster.cell.array[2,2]
