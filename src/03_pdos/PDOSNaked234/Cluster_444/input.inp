@@ -18,32 +18,18 @@
       REL_CUTOFF 60
     &END MGRID
 
-!    &POISSON                    ! Solver requested for non periodic calculations
-!      PERIODIC NONE
-!      PSOLVER  WAVELET          ! Type of solver
-!    &END POISSON
-    &SCF                        ! Parameters controlling the convergence of the scf. This section should not be changed. 
-      SCF_GUESS ATOMIC
-      EPS_SCF 1.0E-6
-      MAX_SCF 300
-      ADDED_MOS 100
-      &DIAGONALIZATION
-         ALGORITHM STANDARD
-         EPS_ADAPT 0.01
-      &END DIAGONALIZATION
-!    &OT
-!       MINIMIZER DIIS
-!       N_HISTORY_VEC 7
-!       PRECONDITIONER FULL_KINETIC
-!    &END OT
-
-    &MIXING
-      METHOD BROYDEN_MIXING
-      ALPHA 0.2
-      BETA 1.5
-      NBROYDEN 8
-    &END MIXING
-   
+    &SCF
+        EPS_SCF     1.000E-05
+        SCF_GUESS  RESTART
+        MAX_SCF 100
+        &OT T
+          MINIMIZER  DIIS
+          PRECONDITIONER  FULL_ALL
+        &END OT
+        &OUTER_SCF T
+          EPS_SCF     1.000E-05
+          MAX_SCF  10
+        &END OUTER_SCF
     &END SCF
 
 
