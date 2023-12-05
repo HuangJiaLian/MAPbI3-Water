@@ -43,4 +43,4 @@ fi
 
 
 # 4. Download the Calculation results from cluster when completed
-# rsync -Pr huangj4@triton.aalto.fi:/scratch/phys/project/sin/Jie/Github/cp2kTest/${basePath} .
+rsync --exclude "*RESTART*" -Pr huangj4@triton.aalto.fi:/scratch/phys/project/sin/Jie/Github/cp2kTest/${basePath} .
