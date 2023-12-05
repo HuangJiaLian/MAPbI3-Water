@@ -43,11 +43,11 @@ for type_i, size in enumerate(['222', '333', '444']):
         plt.subplots_adjust(left=0.05, right=0.95, bottom=0.17, top=0.98)
 
         axins = fig.add_axes([0.52, 0.5, 0.3, 0.43])
-        x1, x2, y1, y2 = 0.1, 2.99, 0, 15
+        x1, x2, y1, y2 = -0.1, 3.2, 0, 15
         axins.tick_params(direction='in')
         axins.set_xlim(x1, x2)
         axins.set_ylim(y1, y2)
-        axins.set_xticklabels([])
+        #axins.set_xticklabels([])
         axins.set_yticklabels([])
         for i, kind in enumerate(kinds):
             data = np.loadtxt('{}/Cluster_{}/smeared_{}_{}.dat'.format(calculate_type, size, spin, i+1))
