@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from ase.io import read, write
 from ase.visualize import view
 from ase.geometry.geometry import wrap_positions
