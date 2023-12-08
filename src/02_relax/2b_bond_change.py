@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import MDAnalysis as mda
 import numpy as np 
 import matplotlib.pyplot as plt
