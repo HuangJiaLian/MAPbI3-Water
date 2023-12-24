@@ -3,7 +3,6 @@ from ase.visualize import view
 from ase import Atoms
 import numpy as np
 
-
 def placeWater(x, y, z):
     dx = 0.7
     return Atoms('HOH', positions=np.array([[x-dx, y+dx, z], [x, y, z], [x+dx, y+dx, z]]))

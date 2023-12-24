@@ -5,7 +5,7 @@ import os
 from ase.data import colors, atomic_numbers
 
 traj_path='../02_relax'
-calculation_type='ab_energy'
+calculation_type='ab_energy_final'
 sizes = ['222', '333', '444']
 cells = []
 

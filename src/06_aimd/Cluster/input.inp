@@ -1,0 +1,185 @@
+@SET RESTART 1
+
+&GLOBAL
+  PROJECT nvt
+#  RUN_TYPE ENERGY_FORCE
+#  RUN_TYPE GEO_OPT
+#  RUN_TYPE CELL_OPT
+  RUN_TYPE MD 
+  PRINT_LEVEL LOW 
+&END GLOBAL
+
+&FORCE_EVAL
+  METHOD Quickstep
+  &DFT
+    LSD
+    MULTIPLICITY 2
+    BASIS_SET_FILE_NAME BASIS_MOLOPT
+    POTENTIAL_FILE_NAME GTH_POTENTIALS
+    WFN_RESTART_FILE_NAME ./cp2k-RESTART.wfn
+#    PLUS_U_METHOD mulliken
+#    CHARGE +2
+     #UKS  F  #LSD
+#    SURFACE_DIPOLE_CORRECTION T
+#    SURF_DIP_DIR Z
+    &QS
+      WF_INTERPOLATION ASPC
+      EXTRAPOLATION_ORDER 3
+    &END QS
+#    MULTIPLICITY 1
+#    &KPOINTS
+#      SCHEME MONKHORST-PACK 1 1 1
+#      SYMMETRY T
+#      VERBOSE T
+#      FULL_GRID T
+#    &END KPOINTS
+    &MGRID
+      NGRIDS 4
+      CUTOFF 500
+      REL_CUTOFF 60 
+    &END MGRID
+#    &POISSON
+#      PERIODIC NONE
+#      POISSON_SOLVER MT
+#      &MT
+#        ALPHA 7.0
+#        REL_CUTOFF 1.2
+#      &END MT
+#    &END POISSON
+     &SCF
+       MAX_SCF     100
+       EPS_SCF     5E-06
+       SCF_GUESS   ATOMIC
+       &OT  T
+         MINIMIZER  CG      #CG or DIIS Need further test
+         LINESEARCH  2PNT
+         PRECONDITIONER  FULL_ALL   #FULL_ALL not satisfy very large system
+       &END OT
+       &OUTER_SCF  T
+         EPS_SCF     1.0E-05
+         MAX_SCF     100
+       &END OUTER_SCF
+    &END SCF
+    &XC
+      &XC_FUNCTIONAL PBE
+      &END XC_FUNCTIONAL
+     &VDW_POTENTIAL
+      DISPERSION_FUNCTIONAL PAIR_POTENTIAL
+      &PAIR_POTENTIAL
+       TYPE DFTD3
+       PARAMETER_FILE_NAME dftd3.dat
+       REFERENCE_FUNCTIONAL BLYP
+      &END PAIR_POTENTIAL
+     &END VDW_POTENTIAL    
+    &END XC
+    &PRINT
+#       &MULLIKEN  SILENT
+#         FILENAME Mull.mulliken
+#       &END MULLIKEN
+#       &E_DENSITY_CUBE
+#         FILENAME Dentity_maybeSpin.cube
+#       &END E_DENSITY_CUBE
+#       &MO_CUBES
+#         NLUMO 1
+#         FILENAME MO.cube 
+#       &END MO_CUBES
+    &END PRINT
+  &END DFT
+  &SUBSYS
+    &CELL
+     ABC 31.79 31.09  30.389999999999997
+     PERIODIC NONE
+     #ALPHA_BETA_GAMMA 90.4516 90.4001 90.6011
+    &END CELL
+    #    &COORD
+            #  	@INCLUDE 'coord.inc'
+            #    &END COORD
+    &TOPOLOGY
+       COORD_FILE_FORMAT XYZ
+       COORD_FILE_NAME Water_relaxed_MAPbI3.xyz
+       #COORD_FILE_NAME phononPOSCARCHDA.cif
+       #COORD_FILE_FORMAT cif 
+    &END TOPOLOGY
+    &KIND Pb
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q4
+    &END KIND
+    &KIND I
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q7
+    &END KIND
+    &KIND N
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q5
+    &END KIND
+    &KIND C
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q4
+    &END KIND
+    &KIND H
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q1
+    &END KIND 
+    &KIND O
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q6
+    &END KIND
+   &END SUBSYS
+   #  &PRINT
+   #    &FORCES ON
+   #    &END FORCES
+   #  &END PRINT
+&END FORCE_EVAL
+
+&MOTION
+  &MD
+  ENSEMBLE NVT
+  STEPS 10000
+  TIMESTEP 1
+  TEMPERATURE 300.0
+#   ANNEALING 0.98
+# use in NVT ensemble
+    &THERMOSTAT
+      TYPE NOSE
+    #  REGION MASSIVE
+      &NOSE
+        LENGTH 3
+        YOSHIDA 3
+        MTS 2
+        TIMECON 1000
+      &END NOSE
+    &END THERMOSTAT
+  &END MD
+  &PRINT
+   &TRAJECTORY
+     &EACH
+       MD 1
+     &END EACH
+   &END TRAJECTORY
+   &VELOCITIES 
+     &EACH
+       MD 1
+     &END EACH
+   &END VELOCITIES
+   &RESTART_HISTORY
+     &EACH
+       MD 500
+     &END EACH
+   &END RESTART_HISTORY
+  &END PRINT
+
+# &CONSTRAINT
+#   &FIXED_ATOMS
+#     COMPONENTS_TO_FIX XYZ
+#     @include fixed_atoms.dat
+#   &END FIXED_ATOMS
+# &END CONSTRAINT
+
+&END MOTION
+
+@if ${RESTART} == 1
+&EXT_RESTART
+  RESTART_FILE_NAME nvt-1.restart
+  RESTART_DEFAULT T
+&END EXT_RESTART
+@endif
