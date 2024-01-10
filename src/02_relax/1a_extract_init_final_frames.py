@@ -43,8 +43,7 @@ povray_settings = {
     'display': False,  # Display while rendering
     'pause': True,  # Pause when done rendering (only if display)
     'transparent': True,  # Transparent background
-    #'canvas_width': 2500,  # Width of canvas in pixels
-    'canvas_width': 1000,  # Width of canvas in pixels
+    'canvas_width': 2500,  # Width of canvas in pixels
     'canvas_height': None,  # Height of canvas in pixels
     'camera_dist': 50.,  # Distance from camera to front atom
     'image_plane': None,  # Distance from front atom to image plane
