@@ -41,7 +41,9 @@ for j, opt_idx in enumerate([0, -1]):
         plt.xlim(2.8, 4.75)
         plt.ylim(0, 11)
         color = mainColors['O'] if opt_idx ==  0 else mainColors['DGreen']
-        plt.hist(bond_lengths, density=True, range=(2, 5), color = color, bins=100, alpha=0.7, label='{}'.format(states[j]))
+        plt.hist(bond_lengths, density=True, range=(2.8, 5), color = color, bins=90, alpha=0.5, label='{}'.format(states[j]))
+        plt.hist(bond_lengths, histtype='step', fill=False,  density=True, range=(2.8, 5), color = color, bins=90, alpha=1)
+        #ax2.hist(x, n_bins, histtype='step', stacked=True, fill=False)
         # sns.kdeplot(data=bond_lengths, fill=False, bw_adjust=0.6, color=color)
         plt.legend(frameon=False)
         plt.annotate('({})'.format(labels[i]), xy=(0.04, 0.8), xycoords="axes fraction")
