@@ -1,11 +1,13 @@
 # MAPbI3-Water
-Source codes for the paper: Mechanism of Interaction of Water above the Methylammonium Lead Iodide Perovskite Nanocluster: Size Effect and Water-Induced Defective States
+Source codes for the paper: [**Mechanism of Interaction of Water above the Methylammonium Lead Iodide Perovskite Nanocluster: Size Effect and Water-Induced Defective States**](https://doi.org/10.1021/acs.jpclett.3c02807)
+
+![](src/02_relax/Figure1.png)
 
 ## Citation
 Cite as: 
 > J. Phys. Chem. Lett. 2024, 15, 2, 575–582
-or
 
+Or
 ```
 @article{Huang2024,
   title = {Mechanism of Interaction of Water above the Methylammonium Lead Iodide Perovskite Nanocluster: Size Effect and Water-Induced Defective States},
