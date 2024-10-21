@@ -1,0 +1,4 @@
+Run start: Sun Nov 12 21:15:44 EET 2023
+   Job ID: 24889385
+   Job Name: relax_222_moreS
+   Comment: CP2K Structure Relaxation Calculate
