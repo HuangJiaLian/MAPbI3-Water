@@ -5,7 +5,7 @@ Source codes for the paper: [**Mechanism of Interaction of Water above the Methy
 
 ## Citation
 Cite as: 
-> J. Phys. Chem. Lett. 2024, 15, 2, 575–582
+> Jie Huang, Bowen Wang, Hejin Yan, and Yongqing Cai, The Journal of Physical Chemistry Letters 2024 15 (2), 575-582, DOI: 10.1021/acs.jpclett.3c02807
 
 Or
 ```
