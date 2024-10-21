@@ -1,0 +1,110 @@
+&GLOBAL
+  PROJECT MAPbI3
+  RUN_TYPE GEO_OPT
+  PRINT_LEVEL LOW
+&END GLOBAL
+
+&MOTION
+  &GEO_OPT
+    MAX_ITER 200
+    OPTIMIZER BFGS    ! Most efficient minimizer, but only for 'small' systems
+  &END GEO_OPT
+
+!  &CONSTRAINT
+!    &FIXED_ATOMS
+!      COMPONENTS_TO_FIX XYZ
+!      @include fixed_atoms.dat
+!    &END FIXED_ATOMS
+!  &END CONSTRAINT
+
+&END MOTION
+
+
+
+&FORCE_EVAL
+  METHOD Quickstep              ! Electronic structure method (DFT,...)
+  &DFT
+    LSD   ! Add by Jack Huang
+    MULTIPLICITY 1 ! Add by Jack Huang
+    BASIS_SET_FILE_NAME  BASIS_MOLOPT
+    POTENTIAL_FILE_NAME  GTH_POTENTIALS
+
+    &MGRID ! Add by Jack Huang
+      CUTOFF 220
+      NGRIDS 4
+      REL_CUTOFF 60
+    &END MGRID
+
+!    &POISSON                    ! Solver requested for non periodic calculations
+!      PERIODIC NONE
+!      PSOLVER  WAVELET          ! Type of solver
+!    &END POISSON
+    &SCF                        ! Parameters controlling the convergence of the scf. This section should not be changed. 
+      SCF_GUESS ATOMIC
+      EPS_SCF 1.0E-6
+      MAX_SCF 500
+    &OT
+       MINIMIZER DIIS
+       N_HISTORY_VEC 7
+       PRECONDITIONER FULL_KINETIC
+    &END OT
+    &END SCF
+    &XC                        ! Parameters needed to compute the electronic exchange potential 
+      &XC_FUNCTIONAL PBE
+      &END XC_FUNCTIONAL
+      &VDW_POTENTIAL           ! DFT D3 correction, add by Jack Huang
+         DISPERSION_FUNCTIONAL PAIR_POTENTIAL
+         &PAIR_POTENTIAL
+            TYPE DFTD3
+            PARAMETER_FILE_NAME dftd3.dat
+            REFERENCE_FUNCTIONAL PBE
+            CALCULATE_C9_TERM  TRUE
+            REFERENCE_C9_TERM  TRUE
+         &END PAIR_POTENTIAL
+      &END VDW_POTENTIAL
+    &END XC
+  &END DFT
+
+  &SUBSYS
+    &CELL
+      ABC 37.33 36.629999999999995 35.93
+      PERIODIC NONE              ! Non periodic calculations. That's why the POISSON section is needed 
+    &END CELL
+    &TOPOLOGY                    ! Section used to center the atomic coordinates in the given box. Useful for big molecules
+      &CENTER_COORDINATES
+      &END
+      COORD_FILE_FORMAT XYZ
+      COORD_FILE_NAME naked_cluster333.xyz 
+    &END
+    &KIND C
+      !ELEMENT C
+      BASIS_SET SZV-MOLOPT-GTH
+      POTENTIAL GTH-PBE
+    &END KIND
+    &KIND N
+      !ELEMENT N
+      BASIS_SET SZV-MOLOPT-GTH
+      POTENTIAL GTH-PBE
+    &END KIND
+    &KIND H
+      !ELEMENT H
+      BASIS_SET SZV-MOLOPT-GTH
+      POTENTIAL GTH-PBE-q1
+    &END KIND
+    &KIND O
+      !ELEMENT O
+      BASIS_SET SZV-MOLOPT-GTH
+      POTENTIAL GTH-PBE-q6
+    &END KIND
+    &KIND Pb
+      !ELEMENT Pb
+      BASIS_SET SZV-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE
+    &END KIND
+    &KIND I
+      !ELEMENT I
+      BASIS_SET SZV-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE
+    &END KIND
+  &END SUBSYS
+&END FORCE_EVAL
